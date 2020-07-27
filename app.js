@@ -5,6 +5,14 @@ let game;
 let killa;
 let demon;
 let bullet;
+// empty array to push bullets to
+let bullets = []
+//empty array to push demons to
+let demonArray = []
+let canvas = document.getElementById('game')
+let gw = canvas.width; //800;
+let gh = canvas.height; //400;
+
 
 // Crawler Constructor function
 function Crawler(x, y, width, height, color) {
@@ -24,8 +32,8 @@ function Crawler(x, y, width, height, color) {
     ctx.fillRect(x, y, this.width, this.height);
   }
 }
-// empty array to push bullets to
-const bullets = []
+
+
 
 const detectHit = () => {
   // check for collision on x axis
@@ -61,6 +69,7 @@ const gameLoop = () => {
   if (demon.alive) {
     // render the demon
     // render bullet
+    
     demon.render()
     
     // bullet.render()
@@ -124,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   game.setAttribute('width', 800);
   ctx = game.getContext('2d');
   // CHARACTER REFS
-  demon = new Crawler(300, 10, 80, 20, 'red');
+//   demon = new Crawler(300, 10, 80, 20, 'red');
   killa = new Crawler(320, 355, 50, 50, 'purple');
   bullet = new Crawler(killa.x, killa.y, 10, 30, 'green')
   document.addEventListener('keydown', movementHandler);
@@ -135,30 +144,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+for (let i=0; i <= 5; i++) {
+  // make a new demon object
+  demon = new Crawler(300, 10, 80, 20, 'red');
+        let randX = Math.floor(Math.random() * (gw - demon.width));
+        demon.x = randX;
+        let randY = Math.floor(Math.random() * (gh - demon.width));
+        demon.y = randY;
+        
+        // push the new demon object into the demons array
+        demonArray.push(demon);
+    }
 
 
+function draw(){
+    ctx.fillStyle = "red";
+    ctx.fillRect(0,0,game.width,game.height);
+    for (let i=0; i < demonArray.length; i++) {
+        let demon = demonArray[i];
+        ctx.beginPath();
+        ctx.rect(demon.x, demon.y, w, w);   
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+        ctx.closePath();
+    }
+}
+draw();
+// function update(){
+// // a function to update the demons position with every frame.
+//   for (let i = 0; i < demonArray.length; i++) {
+//         let demon = demon[i];
+//         if(demons.Y >= gh - w || demons.Y <= 0){demons.speed *= -1;}
+//         demons.Y += demons.speed;
 
-
-
-
-
-
-
-
-
-// game.addEventListener('keystroke', (e) => {
-//     bullet.x = killa.x;
-// })
-
-// let bullet = {
-//     x: killa.x,
-//     y: killa.y,
-//     color: green,
-//     width: 10,
-//     height: 30,
-//     alive: true,
-//     render: function () {
-//         ctx.fillStyle = this.color;
-//         ctx.fillRect(this.x, this.y, this.width, this.height);
-//     }
 // }
+// }
+
+
+
+
+
+
+
+
+
+
