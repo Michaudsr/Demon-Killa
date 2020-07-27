@@ -12,8 +12,15 @@ let demonArray = []
 let canvas = document.getElementById('game')
 let gw = canvas.width; //800;
 let gh = canvas.height; //400;
-
-
+let timePassed = 0;
+let randX = Math.floor(Math.random() * (720));
+let randY = Math.floor(Math.random() * (300));
+function time(){
+    timePassed += 250;
+    demonMovement();
+}
+// game time updated every 500ms
+setInterval(time, 250);
 // Crawler Constructor function
 function Crawler(x, y, width, height, color) {
   this.x = x;
@@ -22,6 +29,7 @@ function Crawler(x, y, width, height, color) {
   this.height = height;
   this.color = color;
   this.alive = true;
+  this.direction = true;
   this.render = function() {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -60,7 +68,6 @@ const detectHit = () => {
 
 }
 const gameLoop = () => {
-  // console.log('looping in 💩')
   // clear the cavas
   ctx.clearRect(0, 0, game.width, game.height);
   // display the x, y coordinates of our killa onto the DOM
@@ -123,6 +130,7 @@ const movementHandler = e => {
   }
 }
 
+// document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Dom loaded')
   // DOM REFS
@@ -144,42 +152,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-for (let i=0; i <= 5; i++) {
-  // make a new demon object
-  demon = new Crawler(300, 10, 80, 20, 'red');
-        let randX = Math.floor(Math.random() * (gw - demon.width));
-        demon.x = randX;
-        let randY = Math.floor(Math.random() * (gh - demon.width));
-        demon.y = randY;
-        
-        // push the new demon object into the demons array
-        demonArray.push(demon);
-    }
-
-
-function draw(){
-    ctx.fillStyle = "red";
-    ctx.fillRect(0,0,game.width,game.height);
-    for (let i=0; i < demonArray.length; i++) {
-        let demon = demonArray[i];
-        ctx.beginPath();
-        ctx.rect(demon.x, demon.y, w, w);   
-        ctx.fillStyle = 'red';
-        ctx.fill();
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-        ctx.closePath();
-    }
+for (let i=0; i <= 2; i++) {
+    // make a new demon object
+    let randX = Math.floor(Math.random() * (720));
+    let randY = Math.floor(Math.random() * (300));
+    demon = new Crawler(randX, randY, 80, 20, 'red');
+    // console.log(demon)
+    // demon.x = randX;
+    // console.log(randX)
+    // demon.y = randY;
+    // console.log(randY)
+    // push the new demon object into the demons array
+    demonArray.push(demon);
 }
-draw();
-// function update(){
-// // a function to update the demons position with every frame.
-//   for (let i = 0; i < demonArray.length; i++) {
-//         let demon = demon[i];
-//         if(demons.Y >= gh - w || demons.Y <= 0){demons.speed *= -1;}
-//         demons.Y += demons.speed;
+console.log(demon.x)
+console.log(demon.y)
 
+// function draw(){
+//     ctx.fillStyle = "red";
+//     ctx.fillRect(0,0,game.width,game.height);
+//     for (let i=0; i < demonArray.length; i++) {
+//         let demon = demonArray[i];
+//         ctx.beginPath();
+//         ctx.rect(demon.x, demon.y, demon.width, demon.height);   
+//         ctx.fillStyle = 'red';
+//         ctx.fill();
+//         ctx.strokeStyle = "red";
+//         ctx.stroke();
+//         ctx.closePath();
+//     }
 // }
+// draw();
+
+function demonMovement(){
+// a function to update the demons position with every frame.
+
+  for (let i = 0; i < demonArray.length; i++) {
+      if (timePassed % 2000 == 0){
+          demon.direction = !demon.direction
+      }
+
+       
+        // defining movement for demon.y axis
+        if(demon.y >= 0 && demon.y <= 300 ) {
+            if(demon.direction == true)
+            demon.y +=1  
+        } else {
+            demon.y -=1
+        }
+        
+        // defining movement for demon.x axis
+        if (demon.x >= 0 && demon.x <= 720){
+            if (demon.direction == true){
+                demon.x +=1
+
+            } else {
+                demon.x -=1
+            }
+
+                
+                    
+        }
+
+    
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// let start = Date.now(); // remember start time
+
+// let timer = setInterval(function() {
+//   // how much time passed from the start?
+//   let timePassed = Date.now() - start;
+
+//   if (timePassed >= 2000) {
+//     clearInterval(timer); // finish the animation after 2 seconds
+//     return;
+//   }
+
+//   // draw the animation at the moment timePassed
+//   draw(timePassed);
+
+// }, 20);
+
+// // as timePassed goes from 0 to 2000
+// // left gets values from 0px to 400px
+// function draw(timePassed) {
+// demon.style.left = timePassed / 5 + 'px';
 // }
 
 
