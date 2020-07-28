@@ -19,6 +19,8 @@ let timePassed = 0;
 let randX = Math.floor(Math.random() * (720));
 let randY = Math.floor(Math.random() * (300));
 
+setInterval(fireDemonBullet, 1000);
+
 function time() {
     timePassed += 250;
     demonMovement();
@@ -51,12 +53,13 @@ const detectHit = () => {
   // check for collision on x axis
   // if the killa's bottom value is > demon's top value
   // loop through bullet array to check if hitting target
+  
     for (let i = 0; i < bullets.length; i++){
-        if (bullets[i].x + bullet.width > demon.x &&
-            bullets[i].x < demon.x + demon.width &&
-            bullets[i].y + bullet.height > demon.y &&
-            bullets[i].y < demon.y + demon.height) {
-              demon.alive = false;
+        if (bullets[i].x + bullet.width > demonArray[i].x &&
+            bullets[i].x < demonArray[i].x + demonArray[i].width &&
+            bullets[i].y + bullet.height > demonArray[i].y &&
+            bullets[i].y < demonArray[i].y + demonArray[i].height) {
+              demonArray[i].alive = false;
         }
     }
       
@@ -73,21 +76,24 @@ const gameLoop = () => {
   // display the x, y coordinates of our killa onto the DOM
   movementDisplay.textContent = `X:${killa.x}\nY:${killa.y}`;
   // check if the demon is alive and 
-  if (demon.alive) {
-    // render the demon
-    demon.render()
-    // bullet.render()
-    for (let i = 0; i < bullets.length; i++){
-        bullets[i].y -=25
-        bullet.renderCoords(bullets[i].x, bullets[i].y);
-    }
-    // demonBullet.render()
-    for (let i = 0; i < demonBullets.length; i++){
-        demonBullets[i].y +=25
-        demonBullet.renderCoords(demonBullets[i].x, demonBullets[i].y);
-    }
-    // check for collision
-    detectHit()
+  for (let i = 0; i < bullets.length; i++){
+      bullets[i].y -=25
+      bullet.renderCoords(bullets[i].x, bullets[i].y);
+  }
+  for (let i = 0; i < demonArray.length; i++){
+      if (demonArray[i].alive) {
+        // render the demon
+        demonArray[i].render()
+        // bullet.render()
+        // demonBullet.render()
+        for (let i = 0; i < demonBullets.length; i++){
+            demonBullets[i].y +=25
+            demonBullet.renderCoords(demonBullets[i].x, demonBullets[i].y);
+        }
+        // check for collision
+        detectHit()
+      }
+
   }
   // render the killa
   killa.render()
@@ -96,16 +102,16 @@ const gameLoop = () => {
 // making new bullet object at x and y coordinates 
 function fireBullet(){
     bullets.push({
-        x: bullet.x, 
-        y: bullet.y
+        x: bullet.x + killa.width/2 - bullet.width/2,
+        y: bullet.y + killa.height/2 - bullet.height/2
     })
 
 }
 // making new demonBullet object at x and y coordinates
 function fireDemonBullet(){
     demonBullets.push({
-        x: demonBullet.x, 
-        y: demonBullet.y
+        x: demonBullet.x + demon.width/2 - demonBullet.width/2,
+        y: demonBullet.y + demon.height/2 - demonBullet.height/2
     })
 
 }
@@ -183,22 +189,21 @@ function demonMovement(){
         // defining movement for demon.y axis
         if(demon.y >= 0 && demon.y <= 300 ) {
             if (demon.yDirection == true){
-                demon.y +=1
-                 
+                demon.y +=1 
+                demonBullet.y +=1    
             } else {
-                demon.y -=1
-                
+                demon.y -=1 
+                demonBullet.y -=1
             }
         }
         // defining movement for demon.x axis
         if (demon.x >= 0 && demon.x <= 720) {
             if (demon.xDirection == true){
-                demon.x +=3
-                
-                
+                demon.x +=3  
+                demonBullet.x +=3 
             } else {
-                demon.x -=3
-                
+                demon.x -=3 
+                demonBullet.x -=3 
             }          
         }
     }
