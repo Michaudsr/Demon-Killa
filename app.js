@@ -137,16 +137,7 @@ const movementHandler = e => {
             // bullet.y -=25
             fireBullet()
         }
-        break;   
-        
-    case (90): // z down
-        if (demon.x < game.width) {
-            // demonBullet.y +=25
-            fireDemonBullet()
-        }
-        break;   
-        
-        
+        break;        
     }  
   
 }
@@ -168,7 +159,7 @@ const movementHandler = e => {
   let runGame = setInterval(gameLoop, 60);
 })
 
-for (let i=0; i <= 2; i++) {
+for (let i=0; i <= 4; i++) {
     // make a new demon object
     let randX = Math.floor(Math.random() * (720));
     let randY = Math.floor(Math.random() * (300));
@@ -183,26 +174,26 @@ function demonMovement(){
 // a function to update the demons position with every frame.
   for (let i = 0; i < demonArray.length; i++) {
       if (timePassed % 2000 == 0){
-          demon.xDirection = !demon.xDirection
-          demon.yDirection = !demon.yDirection
+          demonArray[i].xDirection = !demonArray[i].xDirection
+          demonArray[i].yDirection = !demonArray[i].yDirection
         }
         // defining movement for demon.y axis
-        if(demon.y >= 0 && demon.y <= 300 ) {
-            if (demon.yDirection == true){
-                demon.y +=1 
-                demonBullet.y +=1    
+        if(demonArray[i].y >= 0 && demonArray[i].y <= 300 ) {
+            if (demonArray[i].yDirection == true){
+                demonArray[i].y +=4
+                demonBullet.y +=4    
             } else {
-                demon.y -=1 
-                demonBullet.y -=1
+                demonArray[i].y -=4
+                demonBullet.y -=4
             }
         }
         // defining movement for demon.x axis
-        if (demon.x >= 0 && demon.x <= 720) {
-            if (demon.xDirection == true){
-                demon.x +=3  
+        if (demonArray[i].x >= 0 && demonArray[i].x <= 720) {
+            if (demonArray[i].xDirection == true){
+                demonArray[i].x +=3  
                 demonBullet.x +=3 
             } else {
-                demon.x -=3 
+                demonArray[i].x -=3 
                 demonBullet.x -=3 
             }          
         }
