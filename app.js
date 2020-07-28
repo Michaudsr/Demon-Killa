@@ -10,14 +10,17 @@ let demonBullet;
 let bullets = []
 //empty array to push demons to
 let demonArray = []
+let demonArrayTwo = []
 // empty array to push demonBullets
 let demonBullets = []
 let canvas = document.getElementById('game')
 let gw = canvas.width; //800;
 let gh = canvas.height; //400;
 let timePassed = 0;
+let timePassedTwo = 0;
 let randX = Math.floor(Math.random() * (720));
 let randY = Math.floor(Math.random() * (300));
+
 
 setInterval(fireDemonBullet, 1000);
 
@@ -28,6 +31,13 @@ function time() {
 // game time updated every 250ms
 setInterval(time, 250);
 
+function timeTwo() {
+    timePassedTwo += 200;
+    demonMovementTwo();
+}
+// game time updated every 200ms
+setInterval(timeTwo, 200);
+
 // Crawler Constructor function
 function Crawler(x, y, width, height, color) {
   this.x = x;
@@ -37,6 +47,8 @@ function Crawler(x, y, width, height, color) {
   this.color = color;
   this.alive = true;
   this.xDirection = true;
+  this.yDirection = true;
+  this.xDirectionTwo = true;
   this.yDirection = true;
   this.render = function() {
     ctx.fillStyle = this.color;
@@ -53,16 +65,28 @@ const detectHit = () => {
   // check for collision on x axis
   // if the killa's bottom value is > demon's top value
   // loop through bullet array to check if hitting target
-  
+//   console.log(bullets)
+//   console.log(demonArray)
     for (let i = 0; i < bullets.length; i++){
-        if (bullets[i].x + bullet.width > demonArray[i].x &&
-            bullets[i].x < demonArray[i].x + demonArray[i].width &&
-            bullets[i].y + bullet.height > demonArray[i].y &&
-            bullets[i].y < demonArray[i].y + demonArray[i].height) {
-              demonArray[i].alive = false;
+        for (let j = 0; j < demonArray.length; j++){
+            if (bullets[i].x + bullet.width > demonArray[j].x &&
+                bullets[i].x < demonArray[j].x + demonArray[j].width &&
+                bullets[i].y + bullet.height > demonArray[j].y &&
+                bullets[i].y < demonArray[j].y + demonArray[j].height) {
+                  demonArray[j].alive = false;
+            }
         }
     }
-      
+    for (let i = 0; i < bullets.length; i++){
+        for (let j = 0; j < demonArrayTwo.length; j++){
+            if (bullets[i].x + bullet.width > demonArrayTwo[j].x &&
+                bullets[i].x < demonArrayTwo[j].x + demonArrayTwo[j].width &&
+                bullets[i].y + bullet.height > demonArrayTwo[j].y &&
+                bullets[i].y < demonArrayTwo[j].y + demonArrayTwo[j].height) {
+                  demonArrayTwo[j].alive = false;
+            }
+        }
+    }  
  if (demon.x + demon.width > killa.x &&
     demon.x < killa.x + killa.width &&
     demon.y + demon.height > killa.y &&
@@ -70,6 +94,7 @@ const detectHit = () => {
       killa.alive = false;
     }
 }
+
 const gameLoop = () => {
   // clear the cavas
   ctx.clearRect(0, 0, game.width, game.height);
@@ -92,9 +117,24 @@ const gameLoop = () => {
         }
         // check for collision
         detectHit()
-      }
+    }
 
-  }
+    }
+    for (let i = 0; i < demonArrayTwo.length; i++){
+        if (demonArrayTwo[i].alive) {
+          // render the demon
+          demonArrayTwo[i].render()
+          // bullet.render()
+          // demonBullet.render()
+          for (let i = 0; i < demonBullets.length; i++){
+              demonBullets[i].y +=25
+              demonBullet.renderCoords(demonBullets[i].x, demonBullets[i].y);
+          }
+          // check for collision
+        //   detectHit()
+      }
+  
+      }
   // render the killa
   killa.render()
 }
@@ -109,10 +149,12 @@ function fireBullet(){
 }
 // making new demonBullet object at x and y coordinates
 function fireDemonBullet(){
+    for (let i = 0; i < demonArray.length; i++)
     demonBullets.push({
-        x: demonBullet.x + demon.width/2 - demonBullet.width/2,
-        y: demonBullet.y + demon.height/2 - demonBullet.height/2
+        x: demonBullet.x + demonArray[i].width/2 - demonBullet.width/2,
+        y: demonBullet.y + demonArray[i].height/2 - demonBullet.height/2
     })
+    
 
 }
 
@@ -122,7 +164,7 @@ const movementHandler = e => {
   switch (e.keyCode) {
     case (37): // < left
      if (killa.x > 0){
-        killa.x -=25 
+        killa.x -=25
         bullet.x -=25
     } 
       break;
@@ -159,7 +201,7 @@ const movementHandler = e => {
   let runGame = setInterval(gameLoop, 60);
 })
 
-for (let i=0; i <= 4; i++) {
+for (let i=0; i <= 1; i++) {
     // make a new demon object
     let randX = Math.floor(Math.random() * (720));
     let randY = Math.floor(Math.random() * (300));
@@ -199,7 +241,37 @@ function demonMovement(){
         }
     }
 }
+// demonTwo
+for (let i=0; i <= 1; i++) {
+    // make a new demon object
+    let randX = Math.floor(Math.random() * (720));
+    let randY = Math.floor(Math.random() * (300));
+    demonTwo = new Crawler(randX, randY, 80, 20, 'orange');
+    // push the new demon object into the demons arrayTwo
+    demonArrayTwo.push(demonTwo);
+}
+console.log(demonTwo.x)
+console.log(demonTwo.y)
 
+function demonMovementTwo(){
+// a function to update the demons position with every frame.
+  for (let i = 0; i < demonArrayTwo.length; i++) {
+      if (timePassedTwo % 2000 == 0){
+          demonArrayTwo[i].xDirectionTwo = !demonArrayTwo[i].xDirectionTwo
+          demonArrayTwo[i].yDirectionTwo = !demonArrayTwo[i].yDirectionTwo
+        }
+        // defining movement for demonTwo.x axis
+        if (demonArrayTwo[i].x >= 0 && demonArrayTwo[i].x <= 720) {
+            if (demonArrayTwo[i].xDirectionTwo == true){
+                demonArrayTwo[i].x +=10
+                
+            } else {
+                demonArrayTwo[i].x -=10
+                
+            }          
+        }
+    }
+}
 
 
 
