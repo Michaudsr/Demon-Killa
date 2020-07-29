@@ -9,14 +9,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="menu" id="menu">
+    <h1>Demon Killa</h1>
+    <button class="instructions" id="instructions">Instructions</button>
+    <button class="start" id="start">Start Game</button>
+  </div>
   <div id="container">
-    <aside id="top-left"><h2></h2></aside>
+    <aside id="top-left"><h2>Demon Killa</h2></aside>
     <aside id="top-right"><h2 id="movement"></h2></aside>
     <main>
         <canvas id="game"><!-- play it, a game --></canvas>
     </main>
-    <aside id="btm-left"><h2></h2></aside>
+    <aside id="btm-left"><h2>something</h2></aside>
     <aside id="btm-right"><h2 id="status"></h2></aside>
+  </div>
+  <div class="gameover" id="gameover">
+    <h1>Game Over</h1>
+    <button class="restart" id="restart">Restart</button>
+    <button class="mainmenu" id="mainmenu">Main Menu</button>
+  </div>
+  
+    
   </div>
   <script src="app.js"></script>
 </body>

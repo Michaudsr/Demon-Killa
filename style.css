@@ -21,19 +21,22 @@ html,body {
   canvas {
     /* background-image: url('../img/stone.png'); */
     /* background-repeat: repeat; */
-    background-color: black;
     width: 100%;
     height: 100;
+    background-image:  url("/Users/stevenmichaud/generalassembly/unit_one/Project_1/assets/demonbackground.png");
+    
+    
+    
   }
   
   #container {
   max-width: 58em;
   max-height: 90vh;
   /* height: 70vh; */
-  background-color: red;
+  background-color: black;
   margin: 0 auto;
   padding: .5em;
-  display: grid;
+  display: none;
   grid-template-columns: .50fr .50fr .50fr;
   
   grid-template-areas: "top-left top-left top-right"
@@ -50,6 +53,8 @@ html,body {
   }
   
   #top-left {
+    font: yellow;
+    text-align: center;
     grid-area: top-left;
   }
   
@@ -66,12 +71,19 @@ html,body {
   
   #btm-left {
     grid-area: btm-left;
-    background-color: darkblue;
+    background: linear-gradient(black, darkred);
+    font: yellow;
     /* background-color: #222; */
   }
   
   #btm-right {
     grid-area: btm-right;
-    background-color: darkblue;
+    background: linear-gradient(black, darkred);
+    font: yellow;
     /* background-color: #222; */
   }
+
+ .gameover {
+   display: none;
+
+ }
