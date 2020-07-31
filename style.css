@@ -7,6 +7,7 @@ html,body {
     padding-top: 5em;
     text-align: center;
     background-color: black;
+    font-family: 'Press Start 2P', monospace;
     
   }
   
@@ -69,7 +70,7 @@ html,body {
     grid-area: btm-left;
     background: linear-gradient(black, darkred);
     font: yellow;
-    font-size: 
+    
     
     
   }
@@ -77,7 +78,7 @@ html,body {
   #btm-right {
     grid-area: btm-right;
     background: linear-gradient(black, darkred);
-    font-size: 
+   
     
   }
 
@@ -85,3 +86,13 @@ html,body {
    display: none;
 
  }
+
+ .info {
+  width: 400px;
+  margin: 20px auto;
+  background-color: darkred;
+  color: white;
+  display: none;
+  border: 3px solid goldenrod;
+ }
+
