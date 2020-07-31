@@ -84,8 +84,15 @@ const gameOver = () => {
     document.getElementById('gameover').style.display = 'block';
     console.log('Dom loaded')
 }
+function winningFunction(){
+    if (demonArray[0].health <= 0 && demonArray[1].health <= 0 && demonArrayTwo[0].health <= 0 && demonArrayTwo[1].health <= 0 && killa.health > 0)
+    gameOver()
+        document.createElement('h2').textContent = 'You won'
     
+    
+}
 
+    
 const detectHit = () => {
   // check for collision on x axis
   // if the killa's bottom value is > demon's top value
@@ -126,7 +133,7 @@ const detectHit = () => {
                 console.log('demonTwo health is now', demonArrayTwo[j].health)
                 if (demonArrayTwo[j].health <= 0){
                     demonArrayTwo[j].alive = false;
-
+                    winningFunction();
                 }
             }
         }
@@ -138,13 +145,16 @@ const detectHit = () => {
             demonBullets[i].x < killa.x + killa.width &&
             demonBullets[i].y + demonBullet.height >= killa.y - killa.height) {
             demonBullets.pop(demonBullets[i]);
-            killa.health -= 2
+            if (killa.health > 1) {
+                killa.health -= 2
+            } else {
+                demonArrayTwo[j].health = 0
+            }
             console.log('player health is now: ', killa.health)
             if (killa.health <= 0){
-                // console.log('you died')
                 killa.alive = false;
                 gameOver();
-                
+               
             }
         }
     }
@@ -193,8 +203,8 @@ const gameLoop = () => {
       killa.render()
   }
   detectHit()
+  
 }
-// dont know why this is working, img not working tho
 // making new bullet object at x and y coordinates 
 function fireBullet(){
     bullets.push({
@@ -309,6 +319,8 @@ function demonMovementTwo(){
         }
     }
 }
+
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Dom loaded')
     // DOM REFS
@@ -352,6 +364,9 @@ document.getElementById('mainmenu').addEventListener('click', () => {
 })
 
 document.getElementById('restart').addEventListener('click', () => {
-    startGame(); 
+    startGame();
     
+
 } )
+
+
