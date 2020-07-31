@@ -72,13 +72,14 @@ function Crawler(x, y, width, height, color, img, health = 0) {
    ctx.drawImage(this.img, this.x, this.y) 
   }
   // created render method to pass in x and y of bullet, could be other objects.
-  this.renderCoords = function() {
-    ctx.drawImage(this.img, this.x, this.y)
+  this.renderCoords = function(x, y) {
+    ctx.drawImage(this.img, x, y)
   }
 }
 
 const gameOver = () => {
     //stop rendering the killa once game over
+    demonArray = [];
     document.getElementById('container').style.display = 'none';
     document.getElementById('gameover').style.display = 'block';
     console.log('Dom loaded')
@@ -97,7 +98,11 @@ const detectHit = () => {
                 bullets[i].x < demonArray[j].x + demonArray[j].width &&
                 bullets[i].y + bullet.height > demonArray[j].y &&
                 bullets[i].y < demonArray[j].y + demonArray[j].height) {
-                demonArray[j].health -= 2
+                if (demonArray[j].health > 1) {
+                    demonArray[j].health -= 2
+                } else{
+                    demonArray[j].health = 0
+                }
                 console.log('demon health is now', demonArray[j].health)
                 if (demonArray[j].health <= 0){
                         demonArray[j].alive = false;
@@ -113,7 +118,11 @@ const detectHit = () => {
                 bullets[i].x < demonArrayTwo[j].x + demonArrayTwo[j].width &&
                 bullets[i].y + bullet.height > demonArrayTwo[j].y &&
                 bullets[i].y < demonArrayTwo[j].y + demonArrayTwo[j].height) {
-                demonArrayTwo[j].health -= 2
+                if (demonArrayTwo[j].health > 1) {
+                    demonArrayTwo[j].health -= 2
+                } else {
+                    demonArrayTwo[j].health = 0
+                }
                 console.log('demonTwo health is now', demonArrayTwo[j].health)
                 if (demonArrayTwo[j].health <= 0){
                     demonArrayTwo[j].alive = false;
@@ -151,7 +160,8 @@ const gameLoop = () => {
   
   for (let i = 0; i < bullets.length; i++){
       bullets[i].y -=25
-      bullet.renderCoords();
+      bullet.renderCoords(bullets[i].x, bullets[i].y);
+
       
   }
   for (let i = 0; i < demonArray.length; i++){
@@ -162,6 +172,7 @@ const gameLoop = () => {
         for (let j = 0; j < demonBullets.length; j++){
             if (demonArray[i].alive){
                 demonBullets[j].y +=10
+                demonBullet.renderCoords(demonBullets[j].x, demonBullets[j].y);
                 // demonBullets[j].renderCoords();
                 
             }
@@ -317,8 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let runGame = setInterval(gameLoop, 60);
   })
 
-
-document.getElementById('start').addEventListener('click', () => {
+function startGame() {
     document.getElementById('menu').style.display = "none";
     document.getElementById('container').style.display = 'grid';
     killa = new Crawler(320, 355, 60, 30, 'purple', killaImage, 50);
@@ -329,10 +339,19 @@ document.getElementById('start').addEventListener('click', () => {
     // empty array to push demonBullets
     demonBullets = []
     killa.alive = true;
-    
+
+}
+
+    document.getElementById('start').addEventListener('click', () => {
+        startGame();
 })
 
 document.getElementById('mainmenu').addEventListener('click', () => {
     document.getElementById('gameover').style.display = "none";
     document.getElementById('menu').style.display = 'block';
 })
+
+document.getElementById('restart').addEventListener('click', () => {
+    startGame(); 
+    
+} )
