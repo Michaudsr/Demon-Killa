@@ -2,7 +2,7 @@
 let playerHealthDisplay;
 let demonHealthDisplay;
 let demonHealthDisplay2;
-let ctx
+let ctx;
 let game;
 let killa;
 let demon;
@@ -26,11 +26,17 @@ let srcX;
 let srcY;
 let spriteWidth = 60;
 let spriteHeight = 30;   
-demonArray.src = '/Users/stevenmichaud/generalassembly/unit_one/Project_1/assets/demonArray.png';
+let demonImage = document.createElement('img')
+let bulletImage = document.createElement('img')
+let demonImage2 = document.createElement('img')
+let demonBulletImage = document.createElement('img')
+let killaImage = document.createElement('img')
 
-function drawImage(){
-    ctx.drawImage(demonArray.src, scrX, srcY, width, height, demonArray.x, demonArray.y, width, height);
-}
+demonImage.src = 'assets/demonArray.png'
+bulletImage.src = 'assets/bullet.png'
+demonImage2.src = 'assets/demonArrayTwo.png'
+demonBulletImage.src = 'assets/demonBullet.png'
+killaImage.src = 'assets/killa.png'
 
 setInterval(fireDemonBullet, 1000);
 
@@ -49,26 +55,25 @@ function timeTwo() {
 setInterval(timeTwo, 200);
 
 // Crawler Constructor function
-function Crawler(x, y, width, height, color, health = 0) {
+function Crawler(x, y, width, height, color, img, health = 0) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
   this.color = color;
   this.health = health;
+  this.img = img;
   this.alive = true;
   this.xDirection = true;
   this.yDirection = true;
   this.xDirectionTwo = true;
   this.yDirection = true;
   this.render = function() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+   ctx.drawImage(this.img, this.x, this.y) 
   }
   // created render method to pass in x and y of bullet, could be other objects.
-  this.renderCoords = function(x, y){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(x, y, this.width, this.height);
+  this.renderCoords = function() {
+    ctx.drawImage(this.img, this.x, this.y)
   }
 }
 
@@ -141,11 +146,13 @@ const gameLoop = () => {
   ctx.clearRect(0, 0, game.width, game.height);
   // display the x, y coordinates of our killa onto the DOM
   playerHealthDisplay.textContent = `Player Health: ${killa.health}`;
-  demonHealthDisplay.textContent = `Demon Health1: ${demonArray[0].health} Demon Health2: ${demonArray[1].health}`
-  demonHealthDisplay2.textContent = `Demon Health4: ${demonArrayTwo[1].health} Demon Health3: ${demonArrayTwo[0].health}`
+  demonHealthDisplay2.textContent = `Demon Health1: ${demonArray[0].health} Demon Health2: ${demonArray[1].health}`
+  demonHealthDisplay.textContent = `Demon Health3: ${demonArrayTwo[0].health} Demon Health4: ${demonArrayTwo[1].health}`
+  
   for (let i = 0; i < bullets.length; i++){
       bullets[i].y -=25
-      bullet.renderCoords(bullets[i].x, bullets[i].y);
+      bullet.renderCoords();
+      
   }
   for (let i = 0; i < demonArray.length; i++){
       if (demonArray[i].alive) {
@@ -155,7 +162,7 @@ const gameLoop = () => {
         for (let j = 0; j < demonBullets.length; j++){
             if (demonArray[i].alive){
                 demonBullets[j].y +=10
-                demonBullet.renderCoords(demonBullets[j].x, demonBullets[j].y);
+                // demonBullets[j].renderCoords();
                 
             }
             
@@ -176,12 +183,13 @@ const gameLoop = () => {
   }
   detectHit()
 }
-
+// dont know why this is working, img not working tho
 // making new bullet object at x and y coordinates 
 function fireBullet(){
     bullets.push({
         x: bullet.x + killa.width/2 - bullet.width/2,
         y: bullet.y + killa.height/2 - bullet.height/2
+
     })
 }
 // making new demonBullet object at x and y coordinates
@@ -225,7 +233,7 @@ for (let i=0; i <= 1; i++) {
     // make a new demon object
     let randX = Math.floor(Math.random() * (720));
     let randY = Math.floor(Math.random() * (300));
-    demon = new Crawler(randX, randY, 80, 40, 'red', 25);
+    demon = new Crawler(randX, randY, 80, 40, 'red', demonImage, 25);
     // push the new demon object into the demons array
     demonArray.push(demon);
 }
@@ -264,7 +272,7 @@ for (let i=0; i <= 1; i++) {
     // make a new demon object
     let randX = Math.floor(Math.random() * (720));
     let randY = Math.floor(Math.random() * (300));
-    demonTwo = new Crawler(randX, randY, 80, 20, 'orange', 10);
+    demonTwo = new Crawler(randX, randY, 80, 40, 'orange', demonImage2, 10);
     // push the new demon object into the demonsarrayTwo
     demonArrayTwo.push(demonTwo);
 }
@@ -302,9 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
     game.setAttribute('width', 800);
     ctx = game.getContext('2d');
     // CHARACTER REFS
-    killa = new Crawler(320, 355, 50, 50, 'purple', 50);
-    bullet = new Crawler(killa.x, killa.y, 10, 30, 'green');
-    demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue');
+    killa = new Crawler(320, 355, 60, 30, 'purple', killaImage, 50);
+    bullet = new Crawler(killa.x, killa.y, 10, 30, 'green', bulletImage);
+    demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue', demonBulletImage);
     document.addEventListener('keydown', movementHandler);
     let runGame = setInterval(gameLoop, 60);
   })
@@ -313,15 +321,15 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('start').addEventListener('click', () => {
     document.getElementById('menu').style.display = "none";
     document.getElementById('container').style.display = 'grid';
-    killa = new Crawler(320, 355, 50, 50, 'purple', 50);
-    bullet = new Crawler(killa.x, killa.y, 10, 10, 'green');
-    demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue'); 
+    killa = new Crawler(320, 355, 60, 30, 'purple', killaImage, 50);
+    bullet = new Crawler(killa.x, killa.y, 10, 10, 'green', bulletImage);
+    demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue', demonBulletImage); 
     // empty array to push bullets to
     bullets = []
     // empty array to push demonBullets
     demonBullets = []
     killa.alive = true;
-    demonHealth = 25;
+    
 })
 
 document.getElementById('mainmenu').addEventListener('click', () => {
