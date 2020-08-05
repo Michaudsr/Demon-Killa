@@ -358,8 +358,8 @@ function demonMovementTwo(){
 }
 function startGame() {
     playerHealthDisplay = document.getElementById('playerHealth');
-    demonHealthDisplay = document.getElementById('demonHealth')
-    demonHealthDisplay2 = document.getElementById('demonHealth2')
+    demonHealthDisplay = document.getElementById('demonHealth');
+    demonHealthDisplay2 = document.getElementById('demonHealth2');
     game = document.getElementById('game');
     document.getElementById('menu').style.display = "none";
     document.getElementById('container').style.display = 'grid';
@@ -416,17 +416,19 @@ document.addEventListener('DOMContentLoaded', () => {
     bullet = new Crawler(killa.x, killa.y, 10, 30, 'green', bulletImage);
     // demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue', demonBulletImage);
     document.addEventListener('keydown', movementHandler);
-    let runGame = setInterval(gameLoop, 60);
+    
     document.getElementById('start').addEventListener('click', () => {
         startGame();
-    
+        let runGame = setInterval(gameLoop, 60);
   })
   document.getElementById('mainmenu').addEventListener('click', () => {
       document.getElementById('gameover').style.display = "none";
       document.getElementById('menu').style.display = 'block';
+      
   })
   document.getElementById('restart').addEventListener('click', () => {
       location.reload();
+      
     
       
   
