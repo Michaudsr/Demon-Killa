@@ -176,6 +176,27 @@ const detectHit = () => {
 const gameLoop = () => {
   // clear the cavas
   ctx.clearRect(0, 0, game.width, game.height);
+  function Crawler(x, y, width, height, color, img, health = 0) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.health = health;
+    this.img = img;
+    this.alive = true;
+    this.xDirection = true;
+    this.yDirection = true;
+    this.xDirectionTwo = true;
+    this.yDirection = true;
+    this.render = function() {
+     ctx.drawImage(this.img, this.x, this.y) 
+    }
+    // created render method to pass in x and y of bullet, could be other objects.
+    this.renderCoords = function(x, y) {
+      ctx.drawImage(this.img, x, y)
+    }
+  }
   // display the x, y coordinates of our killa onto the DOM
   playerHealthDisplay.textContent = `Player Health: ${killa.health}`;
   demonHealthDisplay2.textContent = `Demon Health1: ${demonArray[0].health} Demon Health2: ${demonArray[1].health}`
@@ -374,8 +395,7 @@ function startGame() {
     demonBullets = []
     killa.alive = true;
     
-    document.addEventListener('keydown', movementHandler);
-    let runGame = setInterval(gameLoop, 60);
+    
   
     
 }
@@ -384,11 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Dom loaded')
     // DOM REFS
     playerHealthDisplay = document.getElementById('playerHealth');
-    demonHealthDisplay = document.getElementById('demonHealth')
+    demonHealthDisplay = document.getElementById('demonHealth');
     demonHealthDisplay2 = document.getElementById('demonHealth2')
     game = document.getElementById('game');
     // CANVAS CONFIG
-    game.setAttribute('height', 400);
+    game.setAttribute('height', 400); 
     game.setAttribute('width', 800);
     ctx = game.getContext('2d');
     // CHARACTER REFS
@@ -397,27 +417,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // demonBullet = new Crawler (demon.x, demon.y, 10, 10, 'blue', demonBulletImage);
     document.addEventListener('keydown', movementHandler);
     let runGame = setInterval(gameLoop, 60);
-  })
-
     document.getElementById('start').addEventListener('click', () => {
         startGame();
-})
-
-document.getElementById('mainmenu').addEventListener('click', () => {
-    document.getElementById('gameover').style.display = "none";
-    document.getElementById('menu').style.display = 'block';
-})
-
-document.getElementById('restart').addEventListener('click', () => {
-    startGame();
     
-
-} )
-
-document.getElementById('instructions').addEventListener('click', () => {
-    document.getElementById('info').style.display = 'block';
+  })
+  document.getElementById('mainmenu').addEventListener('click', () => {
+      document.getElementById('gameover').style.display = "none";
+      document.getElementById('menu').style.display = 'block';
+  })
+  document.getElementById('restart').addEventListener('click', () => {
+      location.reload();
+    
+      
+  
+  } )
+  document.getElementById('instructions').addEventListener('click', () => {
+      document.getElementById('info').style.display = 'block';
+  })
+  
+  document.getElementById('close').addEventListener('click', () => {
+      document.getElementById('info').style.display = 'none';
+  })
+  
 })
 
-document.getElementById('close').addEventListener('click', () => {
-    document.getElementById('info').style.display = 'none';
-})
+
+
