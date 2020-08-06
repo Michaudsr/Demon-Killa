@@ -32,7 +32,7 @@ let demonImage2 = document.createElement('img')
 let demonBulletImage = document.createElement('img')
 let killaImage = document.createElement('img')
 let winner = false;
-
+let runGame;
 demonImage.src = 'assets/demonArray.png'
 bulletImage.src = 'assets/bullet.png'
 demonImage2.src = 'assets/demonArrayTwo.png'
@@ -82,16 +82,27 @@ const gameOver = () => {
     //stop rendering the killa once game over
     // demonArray = [];
     console.log('game over')
-    winner = true;
+    // winner = true;
     document.getElementById('container').style.display = 'none';
     document.getElementById('gameover').style.display = 'block';
     killa = new Crawler(320, 355, 60, 30, 'purple', killaImage, 50);
+    for (let i = 0; i <= 1; i++){
+        demonArrayTwo.pop(demonArrayTwo[i]);
+        demonArray.pop(demonArray[i]);
+        
+    }
+    if (winner) {
+        winner == false;
+    }
+    console.log('runGame', runGame)
+    clearInterval(runGame)
 }
 function winningFunction(){
     if (demonArray[0].health <= 0 && demonArray[1].health <= 0 && demonArrayTwo[0].health <= 0 && demonArrayTwo[1].health <= 0 && killa.health > 0){
         console.log('game won')
         let winGame = document.createElement('h2')
         winGame.innerText = 'You Won'
+        winner = true;
         document.getElementById('gameover').appendChild(winGame)
         gameOver();
 
@@ -161,6 +172,7 @@ const detectHit = () => {
             if (killa.health <= 0){
                 killa.alive = false;
                 gameOver();
+
                
             }
         }
@@ -222,7 +234,7 @@ const gameLoop = () => {
             }
             
         }
-        // check for collision
+        
         
       }
   }
@@ -419,17 +431,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('start').addEventListener('click', () => {
         startGame();
-        let runGame = setInterval(gameLoop, 60);
+        runGame = setInterval(gameLoop, 60);
   })
   document.getElementById('mainmenu').addEventListener('click', () => {
       document.getElementById('gameover').style.display = "none";
       document.getElementById('menu').style.display = 'block';
+      startGame();
+    //   let runGame = setInterval(gameLoop, 60);
+    //   location.reload();
       
   })
   document.getElementById('restart').addEventListener('click', () => {
-      location.reload();
-      
-    
+    //   location.reload();
+    document.getElementById('gameover').style.display = "none";
+    startGame();
+    runGame = setInterval(gameLoop, 60);
       
   
   } )
