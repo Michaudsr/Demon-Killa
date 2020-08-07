@@ -8,6 +8,7 @@ let killa;
 let demon;
 let bullet;
 let demonBullet;
+let callWinFunction = true;
 // empty array to push bullets to
 let bullets = []
 //empty array to push demons to
@@ -92,7 +93,7 @@ const gameOver = () => {
         
     }
     if (winner) {
-        winner == false;
+        winner = false;
     }
     console.log('runGame', runGame)
     clearInterval(runGame)
@@ -102,6 +103,7 @@ function winningFunction(){
         console.log('game won')
         let winGame = document.createElement('h2')
         winGame.innerText = 'You Won'
+        winGame.setAttribute('id', 'winningDisplay') 
         winner = true;
         document.getElementById('gameover').appendChild(winGame)
         gameOver();
@@ -172,6 +174,7 @@ const detectHit = () => {
             if (killa.health <= 0){
                 killa.alive = false;
                 gameOver();
+                callWinFunction = false;
 
                
             }
@@ -250,7 +253,10 @@ const gameLoop = () => {
   }
   if(winner === false){
       detectHit();
-      winningFunction();
+      if(callWinFunction){
+          winningFunction();
+
+      }
 
   }
   
@@ -434,16 +440,22 @@ document.addEventListener('DOMContentLoaded', () => {
         runGame = setInterval(gameLoop, 60);
   })
   document.getElementById('mainmenu').addEventListener('click', () => {
+    var elmnt = document.getElementById('winningDisplay');
+    if (elmnt) { 
+        elmnt.remove();
+    }
       document.getElementById('gameover').style.display = "none";
       document.getElementById('menu').style.display = 'block';
-      startGame();
-    //   let runGame = setInterval(gameLoop, 60);
-    //   location.reload();
+      callWinFunction = true;
       
   })
   document.getElementById('restart').addEventListener('click', () => {
-    //   location.reload();
+    var elmnt = document.getElementById('winningDisplay');
+    if (elmnt) { 
+        elmnt.remove();
+    }
     document.getElementById('gameover').style.display = "none";
+    callWinFunction = true;
     startGame();
     runGame = setInterval(gameLoop, 60);
       
